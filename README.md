@@ -1,3 +1,7 @@
+<div align="center">
+  <img alt="fish-archive" src="./assets/logo.png" width="200" />
+</div>
+
 # fish-archive
 
 Fork of [shoriminimoe/fish-extract](https://github.com/shoriminimoe/fish-extract) with added support for compressing files.

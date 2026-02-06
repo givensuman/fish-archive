@@ -1,11 +1,15 @@
+# Extract various archive formats
+# Arguments: $argv - archive file(s) to extract
+# Returns: 0 on success, 1 on error
 function _fish_archive_extract
     if test (count $argv) -lt 1
         echo "Usage: extract <archive_file>"
         return 1
     end
 
-    set failure false
+    set -l failure false
 
+    # Validate all files exist
     for file in $argv
         if not test -f $archive
             echo "File not found: $archive"
@@ -17,12 +21,15 @@ function _fish_archive_extract
         return 1
     end
 
-    if command -v gtar
-        set tar gtar # MacOS GNU-Tar
+    # Detect tar command
+    set -l tar
+    if command -q gtar
+        set tar gtar
     else
-        set tar tar # Everybody else
+        set tar tar
     end
 
+    # Extract each archive based on file extension
     for file in $argv
         switch $file
             case '*.tar'

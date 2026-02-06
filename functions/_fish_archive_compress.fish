@@ -1,11 +1,16 @@
+# Compress files into various archive formats
+# Arguments: $argv[1..n-1] - files to compress
+#            $argv[n] - output archive name (optional, format detected from extension)
+# Returns: 0 on success, 1 on error
 function _fish_archive_compress
     if test (count $argv) -lt 1
         echo "Usage: compress <files...> [output_archive]"
         return 1
     end
 
-    set failure false
+    set -l failure false
 
+    # Validate all files exist
     for file in $argv
         if not test -f $archive
             echo "File not found: $archive"
@@ -17,19 +22,22 @@ function _fish_archive_compress
         return 1
     end
 
-    if command -v gtar
-        set tar gtar # MacOS GNU-Tar
+    # Detect tar command
+    set -l tar
+    if command -q gtar
+        set tar gtar
     else
-        set tar tar # Everybody else
+        set tar tar
     end
 
-    # compress file -> file.tar
+    # Create .tar with same basename
     if test (count $argv) -eq 1
         $tar cf "$argv[1].tar" "$argv[1]"
         return $status
     end
 
-    set all_existing_files true
+    # Check if all arguments are existing files
+    set -l all_existing_files true
 
     for file in $argv
         if not test -f $file
@@ -37,16 +45,17 @@ function _fish_archive_compress
         end
     end
 
-    # compress foo bar baz -> archive.tar
+    # Create archive.tar containing all files
     if $all_existing_files
         $tar cf "archive.tar" $argv
         return $status
     end
 
-    set output $argv[1]
-    set files $argv[2..-1]
-
-    # compress foo.tar.gz foo -> foo.tar.gz
+    # First argument is output name, rest are files to compress
+    set -l output $argv[1]
+    set -l files $argv[2..-1]
+    
+    # Detect compression format from output filename extension
     switch $output
         case '*.tar.bz2' '*.tbz2' '*.tar.bz' '*.tbz'
             $tar -cjf $output $files
@@ -84,6 +93,7 @@ function _fish_archive_compress
         case '*.zip' '*.xpi' '*.jar'
             zip $output $files
 
+        # Single-file compression formats
         case '*.gz'
             if test (count $files) -ne 1
                 echo "Cannot compress multiple files to .gz"

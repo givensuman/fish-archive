@@ -1,10 +1,10 @@
 <div align="center">
-  <img alt="fish-archive" src="./assets/logo.png" width="200" />
+  <img alt="fish-archive" src="./assets/logo.png" height="200" />
 </div>
 
 # fish-archive
 
-Fork of [shoriminimoe/fish-extract](https://github.com/shoriminimoe/fish-extract) with added support for compressing files.
+A fork of [shoriminimoe/fish-extract](https://github.com/shoriminimoe/fish-extract) with added support for compressing files.
 
 ### Installation
 
@@ -21,8 +21,8 @@ fisher install givensuman/fish-archive
 Extract archive file(s)
 
 ```shell
-extract foo.tar.gz          # runs tar -xvzf foo.tar.gz
-extract foo.tar.gz bar.zip  # runs tar -xvzf foo.tar.gz && unzip bar.zip
+extract foo.tar.gz         # runs `tar -xvzf foo.tar.gz`
+extract foo.tar.gz bar.zip # runs `tar -xvzf foo.tar.gz && unzip bar.zip`
 ```
 
 #### `compress`
@@ -80,7 +80,10 @@ compress foo bar        # runs `tar -cvf archive.tar foo bar`
 |    ❌     | `sublime-package`            | Sublime Text package                 |
 |    ❌     | `war`                        | Web Application archive (Java-based) |
 
+### Requirements
+
+Requires various compression tools depending on the format used. Common tools include: `tar`, `gzip`, `bzip2`, `xz`, `zip`, `unzip`, `7z`.
+
 ### License
 
-[MIT](../LICENSE)
-
+[MIT](./LICENSE)
